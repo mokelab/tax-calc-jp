@@ -4,39 +4,45 @@
   <meta charset="UTF-8">
   <title>源泉徴収とかの計算アプリ | mokelab inc</title>
   <style type="text/css">
+    * { margin:0; }
     .right { text-align: right; }
   </style>
 </head>
 <body>
-  <section id="container"></section>
-  <script id="topTemplate" type="text/ractive">
-    <h1>源泉徴収とかの計算アプリ</h1>
+  <section id="toolbar" style="z-index:1000"></section>
+  <section id="container" style="z-index:1;padding-top:56px"></section>
+  <footer style="padding:8px 16px;">
+    <p>本ツールの計算結果を用いた際の責任は負いかねます。詳しくは<a href="https://www.nta.go.jp/taxanswer/gensen/gensen35.htm">国税庁のサイト<a>をご覧ください</p>
+    <address><a href="https://mokelab.com">2016 Mokelab inc</a></a>
+  </footer>
 
-    <table> 
+  <script id="topTemplate" type="text/ractive">
+    <table>
     <thead>
       <tr><th></th><th>金額</th><th>計算方法</th></tr>
     </thead>
     <tbody>
       <tr>
-        <th>本体価格</th><td><input class="right" type="number" value="{{base}}"/></td>
+        <th class="right">本体価格</th>
+        <td><input class="right" type="number" value="{{base}}"/></td>
       </tr>
       <tr>
-        <th>消費税(8%)</th>
+        <th class="right">消費税(8%)</th>
         <td class="right">{{calcTax(base)}}</td>
         <td class="right">{{base}} x 0.08</td>
       </tr>
       <tr>
-        <th>源泉徴収(100万以下)</th>
+        <th class="right">源泉徴収(100万以下)</th>
         <td class="right">{{calcWithhold(base + calcTax(base))}}</td>
         <td class="right">Min(100万, ({{base}} + {{calcTax(base)}})) x 0.1021</td>
       </tr>
       <tr>
-        <th>源泉徴収(100万超)</th>
+        <th class="right">源泉徴収(100万超)</th>
         <td class="right">{{calcWithhold1M(base + calcTax(base))}}</td>
         <td class="right">Max(0, ({{base}} + {{calcTax(base)}} - 100万)) x 0.2048</td>
       </tr>
       <tr>
-        <th>計</th>
+        <th class="right">計</th>
         <td class="right">{{base + calcTax(base) - calcWithhold(base + calcTax(base)) - calcWithhold1M(base + calcTax(base))}}</td>
         <td class="right">{{base}} + {{calcTax(base)}} - {{calcWithhold(base + calcTax(base))}} - {{calcWithhold1M(base + calcTax(base))}}</td>
       </tr>
